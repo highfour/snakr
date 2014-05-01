@@ -5,23 +5,69 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Snakr extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+    int direction, speed;
+    Rectangle highfour;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("highfour.png");
+
+        highfour = new Rectangle();
+        highfour.x = 800 / 2 - 200 / 2;
+        highfour.y = 600 / 2 - 200 / 2;
+        highfour.width = 200;
+        highfour.height = 200;
+
+        direction = 1;
+        speed = 100;
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+
+        batch.begin();
+        batch.draw(img, highfour.x, highfour.y, 200, 200);
+        batch.end();
+
+        switch(direction){
+            case 0:
+                highfour.y += speed * Gdx.graphics.getDeltaTime();
+                break;
+            case 1:
+                highfour.x += speed * Gdx.graphics.getDeltaTime();
+                break;
+            case 2:
+                highfour.y -= speed * Gdx.graphics.getDeltaTime();
+                break;
+            case 3:
+                highfour.x -= speed * Gdx.graphics.getDeltaTime();
+                break;
+            default:
+                System.out.println("wrong direction");
+        }
+
+
+        if (direction % 2 == 0) {
+            if(Gdx.input.isKeyPressed(Keys.LEFT)) direction = 3;
+            if(Gdx.input.isKeyPressed(Keys.RIGHT)) direction = 1;
+        } else {
+            if(Gdx.input.isKeyPressed(Keys.DOWN)) direction = 2;
+            if(Gdx.input.isKeyPressed(Keys.UP)) direction = 0;
+        }
+
+        if(highfour.x < 0) highfour.x = 0;
+        if(highfour.x > 800 - 200) highfour.x = 800 - 200;
+        if(highfour.y < 0) highfour.y = 0;
+        if(highfour.y > 600 - 200) highfour.y = 600 - 200;
+
 	}
 }
