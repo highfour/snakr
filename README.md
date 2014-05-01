@@ -1,9 +1,7 @@
-##snakr
+##Snakr
 
-###Inhalt
+![HighFour](http://i.imgur.com/CbtVgEu.png =200x)
 
-Das Praktikum Medieninformatik ist eine Pflichtveranstaltung für die Studenten der des Bachelor-Studienganges Medieninformatik im vierten und fünften Semester. In kleineren Gruppen werden Themen aus unterschiedlichen Bereichen bei intensiver Betreuung bearbeitet. Wöchentlich stehen Betreuer und Tutoren zu Konsultationen zur Verfügung. Ausgewählte Arbeiten werden am Ende des Bearbeitungszeitraumes in einer Abschlussveranstaltung präsentiert. Die Teilnehmerzahl ist in jedem der Themenbereiche auf ca. 25 Studierende begrenzt.
+Hier ensteht ein Snake-Spiel, gedacht als Einführung in libGDX.
 
-###Konkret
-
-Das hier ist die Einführung, zur ersten Auseinandersetzung mit libGDX gedacht. Hier entsteht also ein herrlich kleines Snake-Spiel ;)
+Mehr Infos folgen demnächst.
