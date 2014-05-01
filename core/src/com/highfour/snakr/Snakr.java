@@ -15,6 +15,12 @@ public class Snakr extends ApplicationAdapter {
     Rectangle highfour;
 	
 	@Override
+    public void dispose () {
+        batch.dispose();
+        img.dispose();
+    }
+
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("highfour.png");
