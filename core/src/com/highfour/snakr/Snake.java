@@ -35,7 +35,7 @@ public class Snake {
         start_y = y - rect.height / 2;
 
         for (int i = 0; i < 3; i++) {
-            tail.add(new SnakeSegment(this.getColor(), this.start_x, this.start_y));
+            tail.add(new SnakeSegment(this.start_x, this.start_y));
             // FIXME: this will not be a good decision once a snake can collide with its own tail
         }
     }
