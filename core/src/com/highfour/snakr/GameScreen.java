@@ -14,6 +14,8 @@ public class GameScreen implements Screen {
     Snake player1 = new Snake(new Color(153/255f, 196/255f, 84/255f, 1), 600, 450);
     Snake player2 = new Snake(new Color(106/255f, 131/255f, 177/255f, 1), 200, 150);
 
+    public Texture heart = new Texture("heart.png");
+
     public GameScreen(final Snakr game) {
         this.game = game;
     }
@@ -37,11 +39,15 @@ public class GameScreen implements Screen {
         // change font color
         game.font.setColor(Color.BLACK);
         // draw lives text in upper right hand corner
-        game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590);
-        game.font.draw(game.batch, "Lives: " + player2.getLives(), 740, 590);
+        for (int i = 0; i < player1.getLives(); i++) {
+            game.batch.draw(heart, 10 + 30*i, 560);
+        }
+        for (int i = 0; i < player2.getLives(); i++) {
+            game.batch.draw(heart, 760 - 30*i, 560);
+        }
         game.batch.end();
 
-        // render player1 on the screen and update positions
+        // continuously update player positions
         player1.render();
         player2.render();
 
@@ -92,6 +98,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        heart.dispose();
     }
 }
