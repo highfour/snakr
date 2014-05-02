@@ -16,12 +16,14 @@ public class Snake {
 
     private int lives = 3;
 
-    public Snake(Color color, float x, float y) {
+    public Snake(Color color, float x, float y, int direction) {
         this.setColor(color);
         rect.x = x - rect.width / 2;
         rect.y = y - rect.width / 2;
         rect.height = 30;
         rect.width = 30;
+
+        this.direction = direction;
 
         start_x = x;
         start_y = y;
