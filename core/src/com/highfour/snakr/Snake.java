@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 public class Snake {
 
     private Rectangle rect = new Rectangle();
-    private int direction = 1;
+    private int direction;
+    private int start_direction;
     private int speed = 100;
     private Color snake_color = Color.BLACK;
 
@@ -24,17 +25,23 @@ public class Snake {
         rect.width = 30;
 
         this.direction = direction;
+        this.start_direction = direction;
 
-        start_x = x;
-        start_y = y;
+        start_x = x - rect.width / 2;
+        start_y = y - rect.height / 2;
     }
 
     // reset player position and remove a life
     private void resetPos() {
-        rect.x = start_x - rect.width / 2;
-        rect.y = start_y - rect.height / 2;
-        if (lives >= 1) {
+        if (lives > 1) {
             lives--;
+            direction = start_direction;
+            rect.x = start_x;
+            rect.y = start_y;
+        } else {
+            lives--;
+            snake_color = Color.BLACK;
+            speed = 0;
         }
     }
 
@@ -78,20 +85,26 @@ public class Snake {
         if (x < 0 || x > 800 - this.rect.width) {
             resetPos();
             return;
+        } else {
+            rect.x = x;
         }
-        rect.x = x;
     }
 
     public void setY(float y) {
         if (y < 0 || y > 600 - this.rect.height) {
             resetPos();
             return;
+        } else {
+            rect.y = y;
         }
-        rect.y = y;
     }
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    public void setColor(Color color) {
+        snake_color = color;
     }
 
     public void setSpeed(int speed) {
@@ -112,10 +125,6 @@ public class Snake {
 
     public Color getColor() {
         return snake_color;
-    }
-
-    public void setColor(Color color) {
-        snake_color = color;
     }
 
     public int getSpeed() {
