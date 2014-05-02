@@ -23,6 +23,7 @@ public class Snake {
 
     // reset player position and remove a life
     private void resetPos() {
+        //FIXME: reset to original pos, not middle
         rect.x = 800 / 2 - rect.width / 2;
         rect.y = 600 / 2 - rect.height / 2;
         if (lives >= 1) {
@@ -49,6 +50,7 @@ public class Snake {
         }
     }
 
+    // used in render() to continuously add values to the snakes X and Y coordinates
     private void addX (float x) {
         float old_x = this.getX();
         old_x += x;
@@ -99,10 +101,6 @@ public class Snake {
 
     public Texture getImg() {
         return img;
-    }
-
-    public Rectangle getRect() {
-        return rect;
     }
 
     public int getDirection() {

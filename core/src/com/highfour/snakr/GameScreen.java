@@ -9,11 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class GameScreen implements Screen {
 
-    int collisions;
     Snakr game;
 
-    Snake player1 = new Snake(new Texture("gruen.png"), 800/2, 600/2);
-//    Snake player2 = new Snake(new Texture("blau.png"));
+    Snake player1 = new Snake(new Texture("gruen.png"), 200, 150);
+    Snake player2 = new Snake(new Texture("blau.png"), 600, 450);
 
     public GameScreen(final Snakr game) {
         this.game = game;
@@ -29,22 +28,33 @@ public class GameScreen implements Screen {
         game.batch.begin();
         // draw actor
         game.batch.draw(player1.getImg(), player1.getX(), player1.getY(), 30, 30);
+        game.batch.draw(player2.getImg(), player2.getX(), player2.getY(), 30, 30);
         // change font color
         game.font.setColor(Color.BLACK);
         // draw lives text in upper right hand corner
-        game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590);
+        game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590); //TODO: Lives for player2
         game.batch.end();
 
         // render player1 on the screen and update positions
         player1.render();
+        player2.render();
 
         // accept input and prevent the player from turning 180 degrees
         if (player1.getDirection() % 2 == 0) {
-            if(Gdx.input.isKeyPressed(Keys.LEFT)) player1.setDirection(3);
-            if(Gdx.input.isKeyPressed(Keys.RIGHT)) player1.setDirection(1);
+            if (Gdx.input.isKeyPressed(Keys.LEFT)) player1.setDirection(3);
+            if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1.setDirection(1);
         } else {
-            if(Gdx.input.isKeyPressed(Keys.DOWN)) player1.setDirection(2);
-            if(Gdx.input.isKeyPressed(Keys.UP)) player1.setDirection(0);
+            if (Gdx.input.isKeyPressed(Keys.DOWN)) player1.setDirection(2);
+            if (Gdx.input.isKeyPressed(Keys.UP)) player1.setDirection(0);
+        }
+
+        // same for player2
+        if (player2.getDirection() % 2 == 0) {
+            if (Gdx.input.isKeyPressed(Keys.A)) player2.setDirection(3);
+            if (Gdx.input.isKeyPressed(Keys.D)) player2.setDirection(1);
+        } else {
+            if (Gdx.input.isKeyPressed(Keys.S)) player2.setDirection(2);
+            if (Gdx.input.isKeyPressed(Keys.W)) player2.setDirection(0);
         }
 
     }
