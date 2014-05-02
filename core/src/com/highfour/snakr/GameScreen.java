@@ -36,25 +36,25 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         // look at the player's currently set direction and move the player accordingly
-        int val;
+        float val;
         switch(player1.getDirection()){
             case 0:
-                val = (int) player1.getY(); // FIXME: this is dirty... very dirty...
+                val = player1.getY(); // FIXME: this is dirty... very dirty...
                 val += player1.getSpeed() * Gdx.graphics.getDeltaTime();
                 player1.setY(val);
                 break;
             case 1:
-                val = (int) player1.getX();
+                val = player1.getX();
                 val += player1.getSpeed() * Gdx.graphics.getDeltaTime();
                 player1.setX(val);
                 break;
             case 2:
-                val = (int) player1.getY();
+                val = player1.getY();
                 val -= player1.getSpeed() * Gdx.graphics.getDeltaTime();
                 player1.setY(val);
                 break;
             case 3:
-                val = (int) player1.getX();
+                val = player1.getX();
                 val -= player1.getSpeed() * Gdx.graphics.getDeltaTime();
                 player1.setX(val);
                 break;

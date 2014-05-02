@@ -14,16 +14,16 @@ public class Snake {
 
     public Snake(Texture img) {
         this.img = img;
-        rect.x = 800 / 2 - (int) rect.width / 2;
-        rect.y = 600 / 2 - (int) rect.width / 2;
+        rect.x = 800 / 2 - rect.width / 2;
+        rect.y = 600 / 2 - rect.width / 2;
         rect.height = 30;
         rect.width = 30;
     }
 
     // reset player position and remove a life
     private void resetPos() {
-        rect.x = 800 / 2 - (int) rect.width / 2;
-        rect.y = 600 / 2 - (int) rect.height / 2;
+        rect.x = 800 / 2 - rect.width / 2;
+        rect.y = 600 / 2 - rect.height / 2;
         if (lives >= 1) {
             lives--;
         }
@@ -33,7 +33,7 @@ public class Snake {
     Setter
     */
 
-    public void setX(int x) {
+    public void setX(float x) {
         if (x < 0 || x > 800) {
             resetPos();
             return;
@@ -41,7 +41,7 @@ public class Snake {
         rect.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         if (y < 0 || y > 600) {
             resetPos();
             return;
