@@ -11,6 +11,9 @@ public class Snake {
     private int direction = 1;
     private int speed = 100;
 
+    private float start_x;
+    private float start_y;
+
     private int lives = 3;
 
     public Snake(Texture img, float x, float y) {
@@ -19,13 +22,15 @@ public class Snake {
         rect.y = y - rect.width / 2;
         rect.height = 30;
         rect.width = 30;
+
+        start_x = x;
+        start_y = y;
     }
 
     // reset player position and remove a life
     private void resetPos() {
-        //FIXME: reset to original pos, not middle
-        rect.x = 800 / 2 - rect.width / 2;
-        rect.y = 600 / 2 - rect.height / 2;
+        rect.x = start_x - rect.width / 2;
+        rect.y = start_y - rect.height / 2;
         if (lives >= 1) {
             lives--;
         }
