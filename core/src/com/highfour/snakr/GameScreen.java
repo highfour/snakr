@@ -32,7 +32,8 @@ public class GameScreen implements Screen {
         // change font color
         game.font.setColor(Color.BLACK);
         // draw lives text in upper right hand corner
-        game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590); //TODO: Lives for player2
+        game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590);
+        game.font.draw(game.batch, "Lives: " + player2.getLives(), 740, 590);
         game.batch.end();
 
         // render player1 on the screen and update positions
