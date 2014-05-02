@@ -6,29 +6,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 
 public class GameScreen implements Screen {
 
-    Texture img;
-    int direction, speed, collisions;
-    Rectangle highfour;
+    int collisions;
     Snakr game;
 
+    Snake player1 = new Snake(new Texture("gruen.png"));
+//    Snake player2 = new Snake(new Texture("blau.png"));
+
     public GameScreen(final Snakr game) {
-
         this.game = game;
-        img = new Texture("highfour.png");
-
-        highfour = new Rectangle();
-        highfour.x = 800 / 2 - 200 / 2;
-        highfour.y = 600 / 2 - 200 / 2;
-        highfour.width = 200;
-        highfour.height = 200;
-
-        direction = 1;
-        speed = 100;
     }
 
     @Override
@@ -40,66 +28,49 @@ public class GameScreen implements Screen {
         // send everything to be rendered
         game.batch.begin();
         // draw actor
-        game.batch.draw(img, highfour.x, highfour.y, 200, 200);
+        game.batch.draw(player1.getImg(), player1.getX(), player1.getY(), 30, 30);
         // change font color
         game.font.setColor(Color.BLACK);
-        // draw collisions text in upper right hand corner
-        game.font.draw(game.batch, "Collisions: " + collisions, 10, 590);
+        // draw lives text in upper right hand corner
+        game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590);
         game.batch.end();
 
-        // the four possible directions
-        // FIXME: holding two keys should be impossible
-        switch(direction){
+        // look at the player's currently set direction and move the player accordingly
+        int val;
+        switch(player1.getDirection()){
             case 0:
-                highfour.y += speed * Gdx.graphics.getDeltaTime();
+                val = (int) player1.getY(); // FIXME: this is dirty... very dirty...
+                val += player1.getSpeed() * Gdx.graphics.getDeltaTime();
+                player1.setY(val);
                 break;
             case 1:
-                highfour.x += speed * Gdx.graphics.getDeltaTime();
+                val = (int) player1.getX();
+                val += player1.getSpeed() * Gdx.graphics.getDeltaTime();
+                player1.setX(val);
                 break;
             case 2:
-                highfour.y -= speed * Gdx.graphics.getDeltaTime();
+                val = (int) player1.getY();
+                val -= player1.getSpeed() * Gdx.graphics.getDeltaTime();
+                player1.setY(val);
                 break;
             case 3:
-                highfour.x -= speed * Gdx.graphics.getDeltaTime();
+                val = (int) player1.getX();
+                val -= player1.getSpeed() * Gdx.graphics.getDeltaTime();
+                player1.setX(val);
                 break;
             default:
                 System.out.println("wrong direction");
         }
 
-        // stop the player from turning 180 degrees
-        if (direction % 2 == 0) {
-            if(Gdx.input.isKeyPressed(Keys.LEFT)) direction = 3;
-            if(Gdx.input.isKeyPressed(Keys.RIGHT)) direction = 1;
+        // accept input and prevent the player from turning 180 degrees
+        if (player1.getDirection() % 2 == 0) {
+            if(Gdx.input.isKeyPressed(Keys.LEFT)) player1.setDirection(3);
+            if(Gdx.input.isKeyPressed(Keys.RIGHT)) player1.setDirection(1);
         } else {
-            if(Gdx.input.isKeyPressed(Keys.DOWN)) direction = 2;
-            if(Gdx.input.isKeyPressed(Keys.UP)) direction = 0;
+            if(Gdx.input.isKeyPressed(Keys.DOWN)) player1.setDirection(2);
+            if(Gdx.input.isKeyPressed(Keys.UP)) player1.setDirection(0);
         }
 
-        // keep the actor within the game boundaries and check for collisions
-        if(highfour.x < 0) {
-            highfour.x = 0;
-            resetPlayer(highfour);
-        }
-        if(highfour.x > 800 - 200) {
-            highfour.x = 800 - 200;
-            resetPlayer(highfour);
-        }
-        if(highfour.y < 0) {
-            highfour.y = 0;
-            resetPlayer(highfour);
-        }
-        if(highfour.y > 600 - 200) {
-            highfour.y = 600 - 200;
-            resetPlayer(highfour);
-        }
-
-    }
-
-    // reset the player to the middle of the screen and count up a collision
-    public void resetPlayer(Rectangle player) {
-        collisions++;
-        player.x = 800 / 2 - 200 / 2;
-        player.y = 600 / 2 - 200 / 2;
     }
 
     @Override
@@ -129,6 +100,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        img.dispose();
+
     }
 }
