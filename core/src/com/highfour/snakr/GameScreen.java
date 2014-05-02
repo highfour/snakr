@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import java.util.LinkedList;
+
 public class GameScreen implements Screen {
 
     Snakr game;
@@ -29,30 +31,43 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // draw actors
+        // draw shapes
         game.shapes.begin(ShapeType.Filled);
+        // draw player1 on the screen
         game.shapes.setColor(player1.getColor());
         game.shapes.rect(player1.getX(), player1.getY(), player1.getWidth(), player1.getHeight());
+        // draw player2 on the screen
         game.shapes.setColor(player2.getColor());
         game.shapes.rect(player2.getX(), player2.getY(), player2.getWidth(), player2.getHeight());
+        // draw tail for player1
+        LinkedList<SnakeSegment> tail1 = player1.getTail();
+        game.shapes.setColor(player1.getColor());
+        for (SnakeSegment snse : tail1) {
+            game.shapes.rect(snse.getX(), snse.getY(), snse.width, snse.height);
+        }
+        // draw tail for player2
+        LinkedList<SnakeSegment> tail2 = player2.getTail();
+        game.shapes.setColor(player2.getColor());
+        for (SnakeSegment snse : tail2) {
+            game.shapes.rect(snse.getX(), snse.getY(), snse.width, snse.height);
+        }
         game.shapes.end();
 
-        // send everything to be rendered
+        // draw textures (e.g. images)
         game.batch.begin();
-        // change font color
-        game.font.setColor(Color.BLACK);
-        // draw lives text in upper right hand corner
+        // draw hearts in upper right hand corner - player1
         for (int i = 0; i < player1.getLives(); i++) {
             game.batch.draw(heart, 10 + 30*i, 560);
         }
+        // draw hearts in upper left hand corner - player2
         for (int i = 0; i < player2.getLives(); i++) {
             game.batch.draw(heart, 760 - 30*i, 560);
         }
         game.batch.end();
 
         // continuously update player positions
-        player1.render();
-        player2.render();
+        player1.updatePos();
+        player2.updatePos();
 
         // accept input and prevent the player from turning 180 degrees
         if (player1.getDirection() % 2 == 0) {

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Color;
 
+import java.util.LinkedList;
+
 public class Snake {
 
     private Rectangle rect = new Rectangle();
@@ -17,6 +19,8 @@ public class Snake {
 
     private int lives = 3;
 
+    private LinkedList<SnakeSegment> tail = new LinkedList<SnakeSegment>();
+
     public Snake(Color color, float x, float y, int direction) {
         this.setColor(color);
         rect.x = x - rect.width / 2;
@@ -29,6 +33,11 @@ public class Snake {
 
         start_x = x - rect.width / 2;
         start_y = y - rect.height / 2;
+
+        for (int i = 0; i < 3; i++) {
+            tail.add(new SnakeSegment(this.getColor(), this.start_x, this.start_y));
+            // FIXME: this will not be a good decision once a snake can collide with its own tail
+        }
     }
 
     // reset player position and remove a life
@@ -45,7 +54,10 @@ public class Snake {
         }
     }
 
-    public void render() {
+    public void updatePos() {
+
+        moveTail(this.getX(), this.getY());
+
         switch(this.getDirection()){
             case 0:
                 this.addY(this.getSpeed() * Gdx.graphics.getDeltaTime());
@@ -64,7 +76,7 @@ public class Snake {
         }
     }
 
-    // used in render() to continuously add values to the snakes X and Y coordinates
+    // used in updatePos() to continuously add values to the snakes X and Y coordinates
     private void addX (float x) {
         float old_x = this.getX();
         old_x += x;
@@ -75,6 +87,14 @@ public class Snake {
         float old_y = this.getY();
         old_y += y;
         this.setY(old_y);
+    }
+
+    private void moveTail (float x, float y) {
+        // FIXME: moving TailSegments in both directions is clearly not working
+        for (int i = 0; i < tail.size(); i++) {
+            tail.get(i).setX(x + 10 + i * tail.get(i).width);
+            tail.get(i).setY(y + 10 + i * tail.get(i).width);
+        }
     }
 
     /*
@@ -112,6 +132,10 @@ public class Snake {
     /*
     Getter
     */
+
+    public LinkedList<SnakeSegment> getTail() {
+        return tail;
+    }
 
     public int getLives() {
         return lives;
