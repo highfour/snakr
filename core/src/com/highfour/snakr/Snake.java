@@ -1,23 +1,23 @@
 package com.highfour.snakr;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Color;
 
 public class Snake {
 
-    private Texture img;
     private Rectangle rect = new Rectangle();
     private int direction = 1;
     private int speed = 100;
+    private Color snake_color = Color.BLACK;
 
     private float start_x;
     private float start_y;
 
     private int lives = 3;
 
-    public Snake(Texture img, float x, float y) {
-        this.img = img;
+    public Snake(Color color, float x, float y) {
+        this.setColor(color);
         rect.x = x - rect.width / 2;
         rect.y = y - rect.width / 2;
         rect.height = 30;
@@ -104,12 +104,16 @@ public class Snake {
         return lives;
     }
 
-    public Texture getImg() {
-        return img;
-    }
-
     public int getDirection() {
         return direction;
+    }
+
+    public Color getColor() {
+        return snake_color;
+    }
+
+    public void setColor(Color color) {
+        snake_color = color;
     }
 
     public int getSpeed() {

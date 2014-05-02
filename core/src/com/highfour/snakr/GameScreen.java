@@ -5,14 +5,14 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen {
 
     Snakr game;
 
-    Snake player1 = new Snake(new Texture("gruen.png"), 200, 150);
-    Snake player2 = new Snake(new Texture("blau.png"), 600, 450);
+    Snake player1 = new Snake(new Color(153/255f, 196/255f, 84/255f, 1), 600, 450);
+    Snake player2 = new Snake(new Color(106/255f, 131/255f, 177/255f, 1), 200, 150);
 
     public GameScreen(final Snakr game) {
         this.game = game;
@@ -24,11 +24,16 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // draw actors
+        game.shapes.begin(ShapeType.Filled);
+        game.shapes.setColor(player1.getColor());
+        game.shapes.rect(player1.getX(), player1.getY(), 30, 30);
+        game.shapes.setColor(player2.getColor());
+        game.shapes.rect(player2.getX(), player2.getY(), 30, 30);
+        game.shapes.end();
+
         // send everything to be rendered
         game.batch.begin();
-        // draw actor
-        game.batch.draw(player1.getImg(), player1.getX(), player1.getY(), 30, 30);
-        game.batch.draw(player2.getImg(), player2.getX(), player2.getY(), 30, 30);
         // change font color
         game.font.setColor(Color.BLACK);
         // draw lives text in upper right hand corner
