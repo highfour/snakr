@@ -84,7 +84,6 @@ public class Snake {
     public void setX(float x) {
         if (x < 0 || x > 800 - this.rect.width) {
             resetPos();
-            return;
         } else {
             rect.x = x;
         }
@@ -93,7 +92,6 @@ public class Snake {
     public void setY(float y) {
         if (y < 0 || y > 600 - this.rect.height) {
             resetPos();
-            return;
         } else {
             rect.y = y;
         }
@@ -137,6 +135,14 @@ public class Snake {
 
     public float getY() {
         return rect.y;
+    }
+
+    public int getWidth() {
+        return (int) rect.width;
+    }
+
+    public int getHeight() {
+        return (int) rect.height;
     }
 }
 

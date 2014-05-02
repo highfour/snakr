@@ -32,9 +32,9 @@ public class GameScreen implements Screen {
         // draw actors
         game.shapes.begin(ShapeType.Filled);
         game.shapes.setColor(player1.getColor());
-        game.shapes.rect(player1.getX(), player1.getY(), 30, 30);
+        game.shapes.rect(player1.getX(), player1.getY(), player1.getWidth(), player1.getHeight());
         game.shapes.setColor(player2.getColor());
-        game.shapes.rect(player2.getX(), player2.getY(), 30, 30);
+        game.shapes.rect(player2.getX(), player2.getY(), player2.getWidth(), player2.getHeight());
         game.shapes.end();
 
         // send everything to be rendered
