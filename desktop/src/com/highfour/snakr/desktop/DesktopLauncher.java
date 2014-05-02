@@ -10,8 +10,8 @@ public class DesktopLauncher {
         config.title = "snakr";
         config.width = 800;
         config.height = 600;
-        config.fullscreen = false;
-        config.resizable = false;
+        // config.fullscreen = false;
+        // config.resizable = false;
         new LwjglApplication(new Snakr(), config);
     }
 }
