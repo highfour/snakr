@@ -30,7 +30,7 @@ public class MainMenuScreen implements Screen {
         game.font.draw(game.batch, "Press any key to continue.", 100, 100);
         game.batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.isTouched()) {
             game.setScreen(new GameScreen(game));
             dispose();
         }
