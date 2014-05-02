@@ -1,5 +1,6 @@
 package com.highfour.snakr;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -12,10 +13,10 @@ public class Snake {
 
     private int lives = 3;
 
-    public Snake(Texture img) {
+    public Snake(Texture img, float x, float y) {
         this.img = img;
-        rect.x = 800 / 2 - rect.width / 2;
-        rect.y = 600 / 2 - rect.width / 2;
+        rect.x = x - rect.width / 2;
+        rect.y = y - rect.width / 2;
         rect.height = 30;
         rect.width = 30;
     }
@@ -27,6 +28,37 @@ public class Snake {
         if (lives >= 1) {
             lives--;
         }
+    }
+
+    public void render() {
+        switch(this.getDirection()){
+            case 0:
+                this.addY(this.getSpeed() * Gdx.graphics.getDeltaTime());
+                break;
+            case 1:
+                this.addX(this.getSpeed() * Gdx.graphics.getDeltaTime());
+                break;
+            case 2:
+                this.addY(-(this.getSpeed() * Gdx.graphics.getDeltaTime()));
+                break;
+            case 3:
+                this.addX(-(this.getSpeed() * Gdx.graphics.getDeltaTime()));
+                break;
+            default:
+                System.out.println("wrong direction");
+        }
+    }
+
+    private void addX (float x) {
+        float old_x = this.getX();
+        old_x += x;
+        this.setX(old_x);
+    }
+
+    private void addY (float y) {
+        float old_y = this.getY();
+        old_y += y;
+        this.setY(old_y);
     }
 
     /*

@@ -12,7 +12,7 @@ public class GameScreen implements Screen {
     int collisions;
     Snakr game;
 
-    Snake player1 = new Snake(new Texture("gruen.png"));
+    Snake player1 = new Snake(new Texture("gruen.png"), 800/2, 600/2);
 //    Snake player2 = new Snake(new Texture("blau.png"));
 
     public GameScreen(final Snakr game) {
@@ -35,32 +35,8 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "Lives: " + player1.getLives(), 10, 590);
         game.batch.end();
 
-        // look at the player's currently set direction and move the player accordingly
-        float val;
-        switch(player1.getDirection()){
-            case 0:
-                val = player1.getY(); // FIXME: this is dirty... very dirty...
-                val += player1.getSpeed() * Gdx.graphics.getDeltaTime();
-                player1.setY(val);
-                break;
-            case 1:
-                val = player1.getX();
-                val += player1.getSpeed() * Gdx.graphics.getDeltaTime();
-                player1.setX(val);
-                break;
-            case 2:
-                val = player1.getY();
-                val -= player1.getSpeed() * Gdx.graphics.getDeltaTime();
-                player1.setY(val);
-                break;
-            case 3:
-                val = player1.getX();
-                val -= player1.getSpeed() * Gdx.graphics.getDeltaTime();
-                player1.setX(val);
-                break;
-            default:
-                System.out.println("wrong direction");
-        }
+        // render player1 on the screen and update positions
+        player1.render();
 
         // accept input and prevent the player from turning 180 degrees
         if (player1.getDirection() % 2 == 0) {
