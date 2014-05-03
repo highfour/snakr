@@ -94,38 +94,38 @@ public class Snake {
         int tmpdirection;
         int offset_x, offset_y;
 
-        for (int i = 0; i < tail.size(); i++) {
+        for (SnakeSegment snse : tail) {
             offset_x = 0;
             offset_y = 0;
 
-            tmpx = tail.get(i).getX();
-            tmpy = tail.get(i).getY();
-            tmpdirection = tail.get(i).getDirection();
+            tmpx = snse.getX();
+            tmpy = snse.getY();
+            tmpdirection = snse.getDirection();
 
             switch(direction) {
                 case 0:
                     offset_x = 0;
-                    offset_y = -(2 + tail.get(i).width);
+                    offset_y = -(2 + snse.width);
                     break;
                 case 1:
-                    offset_x = -(2 + tail.get(i).width);
+                    offset_x = -(2 + snse.width);
                     offset_y = 0;
                     break;
                 case 2:
                     offset_x = 0;
-                    offset_y = (2 + tail.get(i).width);
+                    offset_y = (2 + snse.width);
                     break;
                 case 3:
-                    offset_x = (2 + tail.get(i).width);
+                    offset_x = (2 + snse.width);
                     offset_y = 0;
                     break;
                 default:
                     System.out.println("wrong direction");
             }
 
-            tail.get(i).setX(x + offset_x);
-            tail.get(i).setY(y + offset_y);
-            tail.get(i).setDirection(direction);
+            snse.setX(x + offset_x);
+            snse.setY(y + offset_y);
+            snse.setDirection(direction);
 
             x = tmpx;
             y = tmpy;
