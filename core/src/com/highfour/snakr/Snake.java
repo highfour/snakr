@@ -56,7 +56,7 @@ public class Snake {
 
     public void updatePos() {
 
-        moveTail(this.getX(), this.getY());
+        moveTail(this.getX(), this.getY(), this.getDirection());
 
         switch(this.getDirection()){
             case 0:
@@ -89,11 +89,47 @@ public class Snake {
         this.setY(old_y);
     }
 
-    private void moveTail (float x, float y) {
-        // FIXME: moving TailSegments in both directions is clearly not working
+    private void moveTail (float x, float y, int direction) {
+        float tmpx, tmpy;
+        int tmpdirection;
+        int offset_x, offset_y;
+
         for (int i = 0; i < tail.size(); i++) {
-            tail.get(i).setX(x + 10 + i * tail.get(i).width);
-            tail.get(i).setY(y + 10 + i * tail.get(i).width);
+            offset_x = 0;
+            offset_y = 0;
+
+            tmpx = tail.get(i).getX();
+            tmpy = tail.get(i).getY();
+            tmpdirection = tail.get(i).getDirection();
+
+            switch(direction) {
+                case 0:
+                    offset_x = 0;
+                    offset_y = -(2 + tail.get(i).width);
+                    break;
+                case 1:
+                    offset_x = -(2 + tail.get(i).width);
+                    offset_y = 0;
+                    break;
+                case 2:
+                    offset_x = 0;
+                    offset_y = (2 + tail.get(i).width);
+                    break;
+                case 3:
+                    offset_x = (2 + tail.get(i).width);
+                    offset_y = 0;
+                    break;
+                default:
+                    System.out.println("wrong direction");
+            }
+
+            tail.get(i).setX(x + offset_x);
+            tail.get(i).setY(y + offset_y);
+            tail.get(i).setDirection(direction);
+
+            x = tmpx;
+            y = tmpy;
+            direction = tmpdirection;
         }
     }
 

@@ -1,8 +1,5 @@
 package com.highfour.snakr;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Rectangle;
-
 /**
  * snakr - com.highfour.snakr
  * Created by Kilian Koeltzsch on 02. May 2014.
@@ -10,10 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class SnakeSegment {
 
-    private Rectangle rect = new Rectangle();
-
     private float pos_x;
     private float pos_y;
+    private int direction;
+
 
     public final int width = 30;
     public final int height = 30;
@@ -37,5 +34,13 @@ public class SnakeSegment {
 
     public void setY(float pos_y) {
         this.pos_y = pos_y;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }
