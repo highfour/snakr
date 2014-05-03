@@ -15,9 +15,9 @@ public class GameScreen implements Screen {
     Snakr game;
 
     // Snake 1 - green
-    Snake player1 = new Snake(new Color(106/255f, 131/255f, 177/255f, 1), 600, 450, 3);
+    private Snake player1 = new Snake(new Color(153/255f, 196/255f, 84/255f, 1), 600, 450, 3);
     // Snake 2 - blue
-    Snake player2 = new Snake(new Color(153/255f, 196/255f, 84/255f, 1), 200, 150, 1);
+    private Snake player2 = new Snake(new Color(106/255f, 131/255f, 177/255f, 1), 200, 150, 1);
 
     public Texture heart = new Texture("heart.png");
 
