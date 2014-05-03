@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 public class GameScreen implements Screen {
 
@@ -19,7 +22,13 @@ public class GameScreen implements Screen {
     // Snake 2 - blue
     private Snake player2 = new Snake(new Color(106/255f, 131/255f, 177/255f, 1), 200, 150, 1);
 
-    public Texture heart = new Texture("heart.png");
+    // Store items
+    private Vector<Item> items = new Vector<Item>();
+    long time = 0; //debug: i'm being used to place and remove items so long as collisions don't yet work
+    long oldtime; //debug: plz remove us after implementing that
+
+    // the texture used for the snake's lives
+    private Texture heart = new Texture("heart.png");
 
     public GameScreen(final Snakr game) {
         this.game = game;
@@ -59,6 +68,12 @@ public class GameScreen implements Screen {
             game.shapes.rect(snse.getX(), snse.getY(), snse.width, snse.height);
         }
 
+        // draw items
+        for (Item item : items) {
+            game.shapes.setColor(item.getColor());
+            game.shapes.rect(item.getX(), item.getY(), item.getWidth(), item.getHeight());
+        }
+
         game.shapes.end();
 
 
@@ -85,6 +100,16 @@ public class GameScreen implements Screen {
         player1.updatePos();
         player2.updatePos();
 
+        time = TimeUtils.millis();
+        if (time - oldtime >= 2000) {
+            // TODO: remove items on collision, not every two seconds...
+            items.removeAllElements();
+            oldtime = time;
+        }
+
+        // place a new item on screen if there are no more
+        if (items.isEmpty()) genItem();
+
 
         /*************
         WAIT FOR INPUT
@@ -107,6 +132,13 @@ public class GameScreen implements Screen {
             if (Gdx.input.isKeyPressed(Keys.W)) player2.setDirection(0);
         }
 
+    }
+
+    private void genItem () {
+        float randX = MathUtils.random(50,750);
+        float randY = MathUtils.random(50,550);
+        // TODO: check if there's nothing there
+        items.add(new Item(randX,randY));
     }
 
     @Override
