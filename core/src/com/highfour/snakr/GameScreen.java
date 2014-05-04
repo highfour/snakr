@@ -22,12 +22,14 @@ public class GameScreen implements Screen {
     private Color player1_color = new Color(153/255f, 196/255f, 84/255f, 1);
     private int player1_lives = 3;
     private int player1_direction = 3;
+    private int player1_length = 3;
 
     // Snake 2 - blue
     private LinkedList<Snake> player2 = new LinkedList<Snake>();
     private Color player2_color = new Color(106/255f, 131/255f, 177/255f, 1);
     private int player2_lives = 3;
     private int player2_direction = 1;
+    private int player2_length = 3;
 
     // Store items
     private Vector<Item> items = new Vector<Item>();
@@ -42,8 +44,8 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // have both players start of with nothing more than a square
-        player1.add(new Snake(600, 450));
-        player2.add(new Snake(200, 150));
+        player1.add(new Snake(600, 460));
+        player2.add(new Snake(200, 160));
     }
 
     @Override
@@ -101,9 +103,9 @@ public class GameScreen implements Screen {
         UPDATE STUFF
         ***********/
         time = TimeUtils.millis();
-        if (time - oldtime >= 200) {
-            updatePos(player1, player1_direction);
-            updatePos(player2, player2_direction);
+        if (time - oldtime >= 200) { //DEBUG: this is a little fast, set the time up
+            updatePos(player1, player1_direction, player1_length);
+            updatePos(player2, player2_direction, player2_length);
             oldtime = time;
         }
 
@@ -134,7 +136,7 @@ public class GameScreen implements Screen {
 
     }
 
-    private void updatePos(LinkedList<Snake> snake, int direction) {
+    private void updatePos(LinkedList<Snake> snake, int direction, int length) {
         float firstX = snake.getFirst().getX();
         float firstY = snake.getFirst().getY();
 
@@ -155,6 +157,10 @@ public class GameScreen implements Screen {
                 break;
             default:
                 System.out.println("wrong direction");
+        }
+
+        if (snake.size() > length) {
+            snake.removeLast();
         }
     }
 
