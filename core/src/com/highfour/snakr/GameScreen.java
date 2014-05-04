@@ -31,8 +31,9 @@ public class GameScreen implements Screen {
 
     // Store items
     private Vector<Item> items = new Vector<Item>();
-    long time = 0; //debug: i'm being used to place and remove items so long as collisions don't yet work
-    long oldtime; //debug: plz remove us after implementing that
+
+    // used for moving the player in certain amounts of time
+    long time, oldtime;
 
     // the texture used for the snake's lives
     private Texture heart = new Texture("heart.png");
@@ -41,8 +42,8 @@ public class GameScreen implements Screen {
         this.game = game;
 
         // have both players start of with nothing more than a square
-        player1.add(new Snake(player1_color, 600, 450));
-        player2.add(new Snake(player2_color, 200, 150));
+        player1.add(new Snake(600, 450));
+        player2.add(new Snake(200, 150));
     }
 
     @Override
@@ -60,13 +61,13 @@ public class GameScreen implements Screen {
         // draw player1 on the screen
         game.shapes.setColor(player1_color);
         for (Snake s : player1) {
-            game.shapes.rect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
+            game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
         }
 
         // draw player2 on the screen
         game.shapes.setColor(player2_color);
         for (Snake s : player2) {
-            game.shapes.rect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
+            game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
         }
 
         // draw items
@@ -96,21 +97,15 @@ public class GameScreen implements Screen {
         game.batch.end();
 
 
-
-        // continuously update player positions
+        /***********
+        UPDATE STUFF
+        ***********/
         time = TimeUtils.millis();
-        if (time - oldtime >= 500) {
-            updatePos(player1, player1_direction, player1_color);
-            updatePos(player2, player2_direction, player2_color);
+        if (time - oldtime >= 200) {
+            updatePos(player1, player1_direction);
+            updatePos(player2, player2_direction);
             oldtime = time;
         }
-
-//        time = TimeUtils.millis();
-//        if (time - oldtime >= 2000) {
-//            // TODO: remove items on collision, not every two seconds...
-//            items.removeAllElements();
-//            oldtime = time;
-//        }
 
         // place a new item on screen if there are no more
         if (items.isEmpty()) genItem();
@@ -139,7 +134,7 @@ public class GameScreen implements Screen {
 
     }
 
-    private void updatePos(LinkedList<Snake> snake, int direction, Color color) {
+    private void updatePos(LinkedList<Snake> snake, int direction) {
         float firstX = snake.getFirst().getX();
         float firstY = snake.getFirst().getY();
 
@@ -147,16 +142,16 @@ public class GameScreen implements Screen {
 
         switch(direction){
             case 0:
-                snake.addFirst(new Snake(color, firstX, firstY + snake.getFirst().getHeight()));
+                snake.addFirst(new Snake(firstX, firstY + snake.getFirst().getSize()));
                 break;
             case 1:
-                snake.addFirst(new Snake(color, firstX + snake.getFirst().getWidth(), firstY));
+                snake.addFirst(new Snake(firstX + snake.getFirst().getSize(), firstY));
                 break;
             case 2:
-                snake.addFirst(new Snake(color, firstX, firstY - snake.getFirst().getHeight()));
+                snake.addFirst(new Snake(firstX, firstY - snake.getFirst().getSize()));
                 break;
             case 3:
-                snake.addFirst(new Snake(color, firstX - snake.getFirst().getWidth(), firstY));
+                snake.addFirst(new Snake(firstX - snake.getFirst().getSize(), firstY));
                 break;
             default:
                 System.out.println("wrong direction");
