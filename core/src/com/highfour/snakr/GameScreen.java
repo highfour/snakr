@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -20,16 +21,12 @@ public class GameScreen implements Screen {
     // Snake 1 - green
     private LinkedList<Snake> player1 = new LinkedList<Snake>();
     private Color player1_color = new Color(153/255f, 196/255f, 84/255f, 1);
-    private int player1_lives = 3;
-    private int player1_direction = 3;
-    private int player1_length = 3;
+    private HashMap<String, Integer> player1_data = new HashMap<String, Integer>();
 
     // Snake 2 - blue
     private LinkedList<Snake> player2 = new LinkedList<Snake>();
     private Color player2_color = new Color(106/255f, 131/255f, 177/255f, 1);
-    private int player2_lives = 3;
-    private int player2_direction = 1;
-    private int player2_length = 3;
+    private HashMap<String, Integer> player2_data = new HashMap<String, Integer>();
 
     // Store items
     private Vector<Item> items = new Vector<Item>();
@@ -46,6 +43,15 @@ public class GameScreen implements Screen {
         // have both players start of with nothing more than a square
         player1.add(new Snake(600, 460));
         player2.add(new Snake(200, 160));
+
+        // initialize player data
+        player1_data.put("lives", 3);
+        player1_data.put("direction", 3);
+        player1_data.put("length", 3);
+
+        player2_data.put("lives", 3);
+        player2_data.put("direction", 1);
+        player2_data.put("length", 3);
     }
 
     @Override
@@ -87,12 +93,12 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
         // draw hearts in upper right hand corner - player1
-        for (int i = 0; i < player1_lives; i++) {
+        for (int i = 0; i < player1_data.get("lives"); i++) {
             game.batch.draw(heart, 10 + 30*i, 560);
         }
 
         // draw hearts in upper left hand corner - player2
-        for (int i = 0; i < player2_lives; i++) {
+        for (int i = 0; i < player2_data.get("lives"); i++) {
             game.batch.draw(heart, 760 - 30*i, 560);
         }
 
@@ -103,9 +109,11 @@ public class GameScreen implements Screen {
         UPDATE STUFF
         ***********/
         time = TimeUtils.millis();
+        // draw an new head for each player every x milliseconds, this could also
+        // be separated for both players to allow for speed increasing powerups
         if (time - oldtime >= 200) { //DEBUG: this is a little fast, set the time up
-            updatePos(player1, player1_direction, player1_length);
-            updatePos(player2, player2_direction, player2_length);
+            updatePos(player1, player1_data);
+            updatePos(player2, player2_data);
             oldtime = time;
         }
 
@@ -117,32 +125,36 @@ public class GameScreen implements Screen {
         WAIT FOR INPUT
         *************/
         // ↑ ↓ ← → = Player 1
-        if (player1_direction % 2 == 0) {
-            if (Gdx.input.isKeyPressed(Keys.LEFT)) player1_direction = 3;
-            if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1_direction = 1;
+        if (player1_data.get("direction") % 2 == 0) {
+            if (Gdx.input.isKeyPressed(Keys.LEFT)) player1_data.put("direction", 3);
+            if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1_data.put("direction", 1);
         } else {
-            if (Gdx.input.isKeyPressed(Keys.DOWN)) player1_direction = 2;
-            if (Gdx.input.isKeyPressed(Keys.UP)) player1_direction = 0;
+            if (Gdx.input.isKeyPressed(Keys.DOWN)) player1_data.put("direction", 2);
+            if (Gdx.input.isKeyPressed(Keys.UP)) player1_data.put("direction", 0);
         }
 
         // W A S D = Player 2
-        if (player2_direction % 2 == 0) {
-            if (Gdx.input.isKeyPressed(Keys.A)) player2_direction = 3;
-            if (Gdx.input.isKeyPressed(Keys.D)) player2_direction = 1;
+        if (player2_data.get("direction") % 2 == 0) {
+            if (Gdx.input.isKeyPressed(Keys.A)) player2_data.put("direction", 3);
+            if (Gdx.input.isKeyPressed(Keys.D)) player2_data.put("direction", 1);
         } else {
-            if (Gdx.input.isKeyPressed(Keys.S)) player2_direction = 2;
-            if (Gdx.input.isKeyPressed(Keys.W)) player2_direction = 0;
+            if (Gdx.input.isKeyPressed(Keys.S)) player2_data.put("direction", 2);
+            if (Gdx.input.isKeyPressed(Keys.W)) player2_data.put("direction", 0);
         }
 
     }
 
-    private void updatePos(LinkedList<Snake> snake, int direction, int length) {
+    private void updatePos(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
         float firstX = snake.getFirst().getX();
         float firstY = snake.getFirst().getY();
 
         // TODO: check for boundaries
 
-        switch(direction){
+
+
+        // TODO: check for item pickup
+
+        switch(playerdata.get("direction")){
             case 0:
                 snake.addFirst(new Snake(firstX, firstY + snake.getFirst().getSize()));
                 break;
@@ -159,9 +171,29 @@ public class GameScreen implements Screen {
                 System.out.println("wrong direction");
         }
 
-        if (snake.size() > length) {
+        float newX = snake.getFirst().getX();
+        float newY = snake.getFirst().getY();
+        int lives = playerdata.get("lives");
+        if (newX < 0 || newX >= 800 || newY < 0 || newY >= 600) {
+            if (lives >= 1) {
+                lives--;
+                playerdata.put("lives", lives);
+                resetPlayer(snake);
+            } else {
+                // TODO: kill player
+            }
+        }
+
+        if (snake.size() > playerdata.get("length")) {
             snake.removeLast();
         }
+    }
+
+    private void resetPlayer (LinkedList<Snake> snake) {
+        // TODO: this
+        // also where should the player be reset to? the starting point?
+        // that could easily be occupied by the other player...
+        // a free random location seems like the best option.
     }
 
     private void genItem () {
