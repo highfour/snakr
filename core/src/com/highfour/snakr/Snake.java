@@ -18,9 +18,9 @@ public class Snake {
         rect.width = size;
     }
 
-    /*
-    Getter
-    */
+    /*****
+    GETTER
+    *****/
 
     public float getX() {
         return rect.x;
@@ -32,6 +32,15 @@ public class Snake {
 
     public int getSize() {
         return size;
+    }
+
+    /*****
+    SETTER
+    *****/
+
+    public void setPos(float x, float y) {
+        rect.x = x;
+        rect.y = y;
     }
 }
 

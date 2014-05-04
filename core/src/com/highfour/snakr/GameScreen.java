@@ -148,10 +148,6 @@ public class GameScreen implements Screen {
         float firstX = snake.getFirst().getX();
         float firstY = snake.getFirst().getY();
 
-        // TODO: check for boundaries
-
-
-
         // TODO: check for item pickup
 
         switch(playerdata.get("direction")){
@@ -190,10 +186,20 @@ public class GameScreen implements Screen {
     }
 
     private void resetPlayer (LinkedList<Snake> snake) {
-        // TODO: this
         // also where should the player be reset to? the starting point?
         // that could easily be occupied by the other player...
         // a free random location seems like the best option.
+
+        // shorten snake back to three elements
+        while (snake.size() > 3) {
+            snake.removeLast();
+        }
+
+        // TODO: check if there's nothing there
+        float randX = MathUtils.random(0,40);
+        float randY = MathUtils.random(0,30);
+
+        snake.getFirst().setPos(randX*20, randY*20);
     }
 
     private void genItem () {
