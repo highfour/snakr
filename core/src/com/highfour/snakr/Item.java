@@ -16,8 +16,8 @@ public class Item {
     private float pos_x;
     private float pos_y;
 
-    private int width = 10;
-    private int height = 10;
+    private int width = 20;
+    private int height = 20;
 
     public Item(float pos_x, float pos_y) {
         this.pos_x = pos_x;

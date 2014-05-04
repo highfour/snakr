@@ -165,10 +165,10 @@ public class GameScreen implements Screen {
     }
 
     private void genItem () {
-        float randX = MathUtils.random(50,750);
-        float randY = MathUtils.random(50,550);
+        float randX = MathUtils.random(0,40);
+        float randY = MathUtils.random(0,30);
         // TODO: check if there's nothing there
-        items.add(new Item(randX,randY));
+        items.add(new Item(randX*20,randY*20));
     }
 
     @Override
