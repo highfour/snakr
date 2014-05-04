@@ -18,9 +18,16 @@ public class GameScreen implements Screen {
     Snakr game;
 
     // Snake 1 - green
-    private Snake player1 = new Snake(new Color(153/255f, 196/255f, 84/255f, 1), 600, 450, 3);
+    private LinkedList<Snake> player1 = new LinkedList<Snake>();
+    private Color player1_color = new Color(153/255f, 196/255f, 84/255f, 1);
+    private int player1_lives = 3;
+    private int player1_direction = 3;
+
     // Snake 2 - blue
-    private Snake player2 = new Snake(new Color(106/255f, 131/255f, 177/255f, 1), 200, 150, 1);
+    private LinkedList<Snake> player2 = new LinkedList<Snake>();
+    private Color player2_color = new Color(106/255f, 131/255f, 177/255f, 1);
+    private int player2_lives = 3;
+    private int player2_direction = 1;
 
     // Store items
     private Vector<Item> items = new Vector<Item>();
@@ -32,6 +39,10 @@ public class GameScreen implements Screen {
 
     public GameScreen(final Snakr game) {
         this.game = game;
+
+        // have both players start of with nothing more than a square
+        player1.add(new Snake(player1_color, 600, 450));
+        player2.add(new Snake(player2_color, 200, 150));
     }
 
     @Override
@@ -47,25 +58,15 @@ public class GameScreen implements Screen {
         game.shapes.begin(ShapeType.Filled);
 
         // draw player1 on the screen
-        game.shapes.setColor(player1.getColor());
-        game.shapes.rect(player1.getX(), player1.getY(), player1.getWidth(), player1.getHeight());
-
-        // draw player2 on the screen
-        game.shapes.setColor(player2.getColor());
-        game.shapes.rect(player2.getX(), player2.getY(), player2.getWidth(), player2.getHeight());
-
-        // draw tail for player1
-        LinkedList<SnakeSegment> tail1 = player1.getTail();
-        game.shapes.setColor(player1.getColor());
-        for (SnakeSegment snse : tail1) {
-            game.shapes.rect(snse.getX(), snse.getY(), snse.width, snse.height);
+        game.shapes.setColor(player1_color);
+        for (Snake s : player1) {
+            game.shapes.rect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
         }
 
-        // draw tail for player2
-        LinkedList<SnakeSegment> tail2 = player2.getTail();
-        game.shapes.setColor(player2.getColor());
-        for (SnakeSegment snse : tail2) {
-            game.shapes.rect(snse.getX(), snse.getY(), snse.width, snse.height);
+        // draw player2 on the screen
+        game.shapes.setColor(player2_color);
+        for (Snake s : player2) {
+            game.shapes.rect(s.getX(), s.getY(), s.getWidth(), s.getHeight());
         }
 
         // draw items
@@ -83,12 +84,12 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
         // draw hearts in upper right hand corner - player1
-        for (int i = 0; i < player1.getLives(); i++) {
+        for (int i = 0; i < player1_lives; i++) {
             game.batch.draw(heart, 10 + 30*i, 560);
         }
 
         // draw hearts in upper left hand corner - player2
-        for (int i = 0; i < player2.getLives(); i++) {
+        for (int i = 0; i < player2_lives; i++) {
             game.batch.draw(heart, 760 - 30*i, 560);
         }
 
@@ -97,15 +98,19 @@ public class GameScreen implements Screen {
 
 
         // continuously update player positions
-        player1.updatePos();
-        player2.updatePos();
-
         time = TimeUtils.millis();
-        if (time - oldtime >= 2000) {
-            // TODO: remove items on collision, not every two seconds...
-            items.removeAllElements();
+        if (time - oldtime >= 500) {
+            updatePos(player1, player1_direction, player1_color);
+            updatePos(player2, player2_direction, player2_color);
             oldtime = time;
         }
+
+//        time = TimeUtils.millis();
+//        if (time - oldtime >= 2000) {
+//            // TODO: remove items on collision, not every two seconds...
+//            items.removeAllElements();
+//            oldtime = time;
+//        }
 
         // place a new item on screen if there are no more
         if (items.isEmpty()) genItem();
@@ -115,23 +120,47 @@ public class GameScreen implements Screen {
         WAIT FOR INPUT
         *************/
         // ↑ ↓ ← → = Player 1
-        if (player1.getDirection() % 2 == 0) {
-            if (Gdx.input.isKeyPressed(Keys.LEFT)) player1.setDirection(3);
-            if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1.setDirection(1);
+        if (player1_direction % 2 == 0) {
+            if (Gdx.input.isKeyPressed(Keys.LEFT)) player1_direction = 3;
+            if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1_direction = 1;
         } else {
-            if (Gdx.input.isKeyPressed(Keys.DOWN)) player1.setDirection(2);
-            if (Gdx.input.isKeyPressed(Keys.UP)) player1.setDirection(0);
+            if (Gdx.input.isKeyPressed(Keys.DOWN)) player1_direction = 2;
+            if (Gdx.input.isKeyPressed(Keys.UP)) player1_direction = 0;
         }
 
         // W A S D = Player 2
-        if (player2.getDirection() % 2 == 0) {
-            if (Gdx.input.isKeyPressed(Keys.A)) player2.setDirection(3);
-            if (Gdx.input.isKeyPressed(Keys.D)) player2.setDirection(1);
+        if (player2_direction % 2 == 0) {
+            if (Gdx.input.isKeyPressed(Keys.A)) player2_direction = 3;
+            if (Gdx.input.isKeyPressed(Keys.D)) player2_direction = 1;
         } else {
-            if (Gdx.input.isKeyPressed(Keys.S)) player2.setDirection(2);
-            if (Gdx.input.isKeyPressed(Keys.W)) player2.setDirection(0);
+            if (Gdx.input.isKeyPressed(Keys.S)) player2_direction = 2;
+            if (Gdx.input.isKeyPressed(Keys.W)) player2_direction = 0;
         }
 
+    }
+
+    private void updatePos(LinkedList<Snake> snake, int direction, Color color) {
+        float firstX = snake.getFirst().getX();
+        float firstY = snake.getFirst().getY();
+
+        // TODO: check for boundaries
+
+        switch(direction){
+            case 0:
+                snake.addFirst(new Snake(color, firstX, firstY + snake.getFirst().getHeight()));
+                break;
+            case 1:
+                snake.addFirst(new Snake(color, firstX + snake.getFirst().getWidth(), firstY));
+                break;
+            case 2:
+                snake.addFirst(new Snake(color, firstX, firstY - snake.getFirst().getHeight()));
+                break;
+            case 3:
+                snake.addFirst(new Snake(color, firstX - snake.getFirst().getWidth(), firstY));
+                break;
+            default:
+                System.out.println("wrong direction");
+        }
     }
 
     private void genItem () {
