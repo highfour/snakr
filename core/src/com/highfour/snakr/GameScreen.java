@@ -68,6 +68,13 @@ public class GameScreen implements Screen {
         game.shapes.begin(ShapeType.Filled);
         Snake s;
 
+        // draw items
+        for (Item item : items) {
+            game.shapes.setColor(item.getColor());
+            game.shapes.rect(item.getX(), item.getY(), item.getSize(), item.getSize());
+        }
+
+
         // draw player1 on the screen
         game.shapes.setColor(player1_color);
         for (int i=0; i<player1.size(); i++) {
@@ -88,13 +95,6 @@ public class GameScreen implements Screen {
             } else {
                 game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
             }
-        }
-
-
-        // draw items
-        for (Item item : items) {
-            game.shapes.setColor(item.getColor());
-            game.shapes.rect(item.getX(), item.getY(), item.getSize(), item.getSize());
         }
 
         game.shapes.end();
@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
         }
 
         // place a new item on screen if there are no more
-        if (items.isEmpty()) genItem();
+        if (items.size() < 3) genItem();
 
 
         /*************
@@ -160,7 +160,13 @@ public class GameScreen implements Screen {
         float firstX = snake.getFirst().getX();
         float firstY = snake.getFirst().getY();
 
-        // TODO: check for item pickup
+        for (Item i : items) {
+            if (snake.get(0).getX() == i.getX() && snake.get(0).getY() == i.getY()) {
+                playerdata.put("length", playerdata.get("length")+1);
+                items.remove(i);
+                break;
+            }
+        }
 
         switch(playerdata.get("direction")){
             case 0:
@@ -203,6 +209,7 @@ public class GameScreen implements Screen {
         // shorten snake back to three elements
         while (snake.size() > 1) {
             snake.removeLast();
+            playerdata.put("length", 3);
         }
 
         // TODO: check if there's nothing there
