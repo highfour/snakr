@@ -174,7 +174,7 @@ public class GameScreen implements Screen {
             if (lives >= 1) {
                 lives--;
                 playerdata.put("lives", lives);
-                resetPlayer(snake);
+                resetPlayer(snake, playerdata);
             } else {
                 // TODO: kill player
             }
@@ -183,13 +183,11 @@ public class GameScreen implements Screen {
         if (snake.size() > playerdata.get("length")) {
             snake.removeLast();
         }
+
+
     }
 
-    private void resetPlayer (LinkedList<Snake> snake) {
-        // also where should the player be reset to? the starting point?
-        // that could easily be occupied by the other player...
-        // a free random location seems like the best option.
-
+    private void resetPlayer (LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
         // shorten snake back to three elements
         while (snake.size() > 3) {
             snake.removeLast();
@@ -199,6 +197,9 @@ public class GameScreen implements Screen {
         float randX = MathUtils.random(8,32);
         float randY = MathUtils.random(6,24);
 
+        int randDirection = MathUtils.random(0,3);
+
+        playerdata.put("direction", randDirection);
         snake.getFirst().setPos(randX*20, randY*20);
     }
 
