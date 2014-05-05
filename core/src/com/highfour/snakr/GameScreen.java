@@ -48,14 +48,18 @@ public class GameScreen implements Screen {
         player1_data.put("lives", 3);
         player1_data.put("direction", 3);
         player1_data.put("length", 3);
+        player1_data.put("dir_changed", 0);
 
         player2_data.put("lives", 3);
         player2_data.put("direction", 1);
         player2_data.put("length", 3);
+        player2_data.put("dir_changed", 0);
     }
 
     @Override
     public void render (float delta) {
+        int tmp_direction;
+
         // set background color to white
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -137,23 +141,34 @@ public class GameScreen implements Screen {
         WAIT FOR INPUT
         *************/
         // ↑ ↓ ← → = Player 1
-        if (player1_data.get("direction") % 2 == 0) {
-            if (Gdx.input.isKeyPressed(Keys.LEFT)) player1_data.put("direction", 3);
-            if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1_data.put("direction", 1);
-        } else {
-            if (Gdx.input.isKeyPressed(Keys.DOWN)) player1_data.put("direction", 2);
-            if (Gdx.input.isKeyPressed(Keys.UP)) player1_data.put("direction", 0);
+        if (player1_data.get("dir_changed") == 0) {
+            tmp_direction = player1_data.get("direction");
+            if (player1_data.get("direction") % 2 == 0) {
+                if (Gdx.input.isKeyPressed(Keys.LEFT)) player1_data.put("direction", 3);
+                if (Gdx.input.isKeyPressed(Keys.RIGHT)) player1_data.put("direction", 1);
+            } else {
+                if (Gdx.input.isKeyPressed(Keys.DOWN)) player1_data.put("direction", 2);
+                if (Gdx.input.isKeyPressed(Keys.UP)) player1_data.put("direction", 0);
+            }
+            if (tmp_direction != player1_data.get("direction")) {
+                player1_data.put("dir_changed", 1);
+            }
         }
 
         // W A S D = Player 2
-        if (player2_data.get("direction") % 2 == 0) {
-            if (Gdx.input.isKeyPressed(Keys.A)) player2_data.put("direction", 3);
-            if (Gdx.input.isKeyPressed(Keys.D)) player2_data.put("direction", 1);
-        } else {
-            if (Gdx.input.isKeyPressed(Keys.S)) player2_data.put("direction", 2);
-            if (Gdx.input.isKeyPressed(Keys.W)) player2_data.put("direction", 0);
+        if (player2_data.get("dir_changed") == 0) {
+            tmp_direction = player2_data.get("direction");
+            if (player2_data.get("direction") % 2 == 0) {
+                if (Gdx.input.isKeyPressed(Keys.A)) player2_data.put("direction", 3);
+                if (Gdx.input.isKeyPressed(Keys.D)) player2_data.put("direction", 1);
+            } else {
+                if (Gdx.input.isKeyPressed(Keys.S)) player2_data.put("direction", 2);
+                if (Gdx.input.isKeyPressed(Keys.W)) player2_data.put("direction", 0);
+            }
+            if (tmp_direction != player2_data.get("direction")) {
+                player2_data.put("dir_changed", 1);
+            }
         }
-
     }
 
     private void updatePos(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
@@ -184,6 +199,8 @@ public class GameScreen implements Screen {
             default:
                 System.out.println("wrong direction");
         }
+
+        playerdata.put("dir_changed", 0);
 
         float newX = snake.getFirst().getX();
         float newY = snake.getFirst().getY();
