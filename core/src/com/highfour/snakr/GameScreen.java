@@ -47,13 +47,16 @@ public class GameScreen implements Screen {
         // initialize player data
         player1_data.put("lives", 3);
         player1_data.put("direction", 3);
-        player1_data.put("length", 3);
+        player1_data.put("length", 1);
         player1_data.put("dir_changed", 0);
+        player1_data.put("number", 1);
+
 
         player2_data.put("lives", 3);
         player2_data.put("direction", 1);
-        player2_data.put("length", 3);
+        player2_data.put("length", 1);
         player2_data.put("dir_changed", 0);
+        player2_data.put("number", 2);
     }
 
     @Override
@@ -183,6 +186,8 @@ public class GameScreen implements Screen {
             }
         }
 
+        testCollision(snake, playerdata);
+
         switch(playerdata.get("direction")){
             case 0:
                 snake.addFirst(new Snake(firstX, firstY + snake.getFirst().getSize()));
@@ -204,15 +209,8 @@ public class GameScreen implements Screen {
 
         float newX = snake.getFirst().getX();
         float newY = snake.getFirst().getY();
-        int lives = playerdata.get("lives");
         if (newX < 0 || newX >= 800 || newY < 0 || newY >= 600) {
-            if (lives >= 1) {
-                lives--;
-                playerdata.put("lives", lives);
-                resetPlayer(snake, playerdata);
-            } else {
-                // TODO: kill player
-            }
+            lostLive(snake, playerdata);
         }
 
         if (snake.size() > playerdata.get("length")) {
@@ -222,11 +220,52 @@ public class GameScreen implements Screen {
 
     }
 
+    private void lostLive(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
+        int lives = playerdata.get("lives");
+        if (lives >= 1) {
+            lives--;
+            playerdata.put("lives", lives);
+            resetPlayer(snake, playerdata);
+        } else {
+            // TODO: kill player
+        }
+    }
+
+    private void testCollision(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
+        // CollisionTest for the snake itself
+        for (int i=1; i<snake.size(); i++) {
+            if (snake.get(0).getX() == snake.get(i).getX() && snake.get(0).getY() == snake.get(i).getY()) {
+                lostLive(snake, playerdata);
+            }
+        }
+
+        // CollisionTest with the other snake
+        if (playerdata.get("number") == 1) {
+            for (int i=1; i<player2.size(); i++) {
+                if (snake.get(0).getX() == player2.get(i).getX() && snake.get(0).getY() == player2.get(i).getY()) {
+                    lostLive(snake, playerdata);
+                }
+            }
+        } else if (playerdata.get("number") == 2) {
+            for (int i=1; i<player1.size(); i++) {
+                if (snake.get(0).getX() == player1.get(i).getX() && snake.get(0).getY() == player1.get(i).getY()) {
+                    lostLive(snake, playerdata);
+                }
+            }
+        }
+
+        // CollisionTest of the 2 heads
+        if (player1.get(0).getX() == player2.get(0).getX() && player1.get(0).getY() == player2.get(0).getY()) {
+            lostLive(player1, player1_data);
+            lostLive(player2, player2_data);
+        }
+    }
+
     private void resetPlayer (LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
         // shorten snake back to three elements
         while (snake.size() > 1) {
             snake.removeLast();
-            playerdata.put("length", 3);
+            playerdata.put("length", 1);
         }
 
         // TODO: check if there's nothing there
