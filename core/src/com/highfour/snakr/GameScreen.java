@@ -174,6 +174,16 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void repositionItem(Item item) {
+        float randX = MathUtils.random(0,39);
+        float randY = MathUtils.random(0,29);
+        if (isOccupied(randX*20, randY*20)) {
+            repositionItem(item);
+        }
+        item.setPos_x(randX*20);
+        item.setPos_y(randY*20);
+    }
+
     private void updatePos(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
         float firstX = snake.getFirst().getX();
         float firstY = snake.getFirst().getY();
@@ -181,7 +191,7 @@ public class GameScreen implements Screen {
         for (Item i : items) {
             if (snake.get(0).getX() == i.getX() && snake.get(0).getY() == i.getY()) {
                 playerdata.put("length", playerdata.get("length") + 1);
-                i.reposition();
+                repositionItem(i);
                 break;
             }
         }
@@ -268,14 +278,34 @@ public class GameScreen implements Screen {
             playerdata.put("length", 1);
         }
 
-        // TODO: check if there's nothing there
         float randX = MathUtils.random(8,32);
         float randY = MathUtils.random(6,24);
 
         int randDirection = MathUtils.random(0,3);
 
         playerdata.put("direction", randDirection);
+
+        if (isOccupied(randX*20, randY*20)) resetPlayer(snake, playerdata);
         snake.getFirst().setPos(randX*20, randY*20);
+    }
+
+    public boolean isOccupied(float x, float y) {
+        for (Snake s : player1) {
+            if (s.getX() == x && s.getY() == y) {
+                return true;
+            }
+        }
+        for (Snake s : player2) {
+            if (s.getX() == x && s.getY() == y) {
+                return true;
+            }
+        }
+        for (Item i : items) {
+            if (i.getX() == x && i.getY() == y) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void genItem () {
