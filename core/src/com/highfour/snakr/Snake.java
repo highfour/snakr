@@ -1,10 +1,6 @@
 package com.highfour.snakr;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.Color;
-
-import java.util.LinkedList;
 
 public class Snake {
 

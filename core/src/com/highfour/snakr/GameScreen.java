@@ -64,19 +64,32 @@ public class GameScreen implements Screen {
         /**********
         DRAW SHAPES
         **********/
+
         game.shapes.begin(ShapeType.Filled);
+        Snake s;
 
         // draw player1 on the screen
         game.shapes.setColor(player1_color);
-        for (Snake s : player1) {
-            game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
+        for (int i=0; i<player1.size(); i++) {
+            s = player1.get(i);
+            if(i>0) {               // the tail of the snake is smaller than the head
+                game.shapes.rect(s.getX()+1, s.getY()+1, s.getSize()-2, s.getSize()-2);
+            } else {
+                game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
+            }
         }
 
         // draw player2 on the screen
         game.shapes.setColor(player2_color);
-        for (Snake s : player2) {
-            game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
+        for (int i=0; i<player2.size(); i++) {
+            s = player2.get(i);
+            if(i>0) {               // the tail of the snake is smaller than the head
+                game.shapes.rect(s.getX()+1, s.getY()+1, s.getSize()-2, s.getSize()-2);
+            } else {
+                game.shapes.rect(s.getX(), s.getY(), s.getSize(), s.getSize());
+            }
         }
+
 
         // draw items
         for (Item item : items) {
@@ -85,7 +98,6 @@ public class GameScreen implements Screen {
         }
 
         game.shapes.end();
-
 
         /**********
         DRAW IMAGES
@@ -191,7 +203,7 @@ public class GameScreen implements Screen {
         // a free random location seems like the best option.
 
         // shorten snake back to three elements
-        while (snake.size() > 3) {
+        while (snake.size() > 1) {
             snake.removeLast();
         }
 
