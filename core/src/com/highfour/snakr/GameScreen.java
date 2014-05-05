@@ -196,8 +196,8 @@ public class GameScreen implements Screen {
         }
 
         // TODO: check if there's nothing there
-        float randX = MathUtils.random(0,40);
-        float randY = MathUtils.random(0,30);
+        float randX = MathUtils.random(8,32);
+        float randY = MathUtils.random(6,24);
 
         snake.getFirst().setPos(randX*20, randY*20);
     }
