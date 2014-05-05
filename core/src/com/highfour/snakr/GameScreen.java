@@ -81,7 +81,7 @@ public class GameScreen implements Screen {
         // draw items
         for (Item item : items) {
             game.shapes.setColor(item.getColor());
-            game.shapes.rect(item.getX(), item.getY(), item.getWidth(), item.getHeight());
+            game.shapes.rect(item.getX(), item.getY(), item.getSize(), item.getSize());
         }
 
         game.shapes.end();

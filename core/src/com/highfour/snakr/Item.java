@@ -12,17 +12,21 @@ public class Item {
 
     private Rectangle rect = new Rectangle();
     private Color item_color = Color.RED;
+    private int size = 20;
 
     private float pos_x;
     private float pos_y;
 
-    private int width = 20;
-    private int height = 20;
-
     public Item(float pos_x, float pos_y) {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
+        rect.width = size;
+        rect.height = size;
     }
+
+    /*****
+    GETTER
+    *****/
 
     public float getX() {
         return pos_x;
@@ -36,11 +40,7 @@ public class Item {
         return item_color;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public int getSize() {
+        return size;
     }
 }
