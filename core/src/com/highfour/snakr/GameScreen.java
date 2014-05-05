@@ -180,8 +180,8 @@ public class GameScreen implements Screen {
 
         for (Item i : items) {
             if (snake.get(0).getX() == i.getX() && snake.get(0).getY() == i.getY()) {
-                playerdata.put("length", playerdata.get("length")+1);
-                items.remove(i);
+                playerdata.put("length", playerdata.get("length") + 1);
+                i.reposition();
                 break;
             }
         }

@@ -1,6 +1,7 @@
 package com.highfour.snakr;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
@@ -22,6 +23,13 @@ public class Item {
         this.pos_y = pos_y;
         rect.width = size;
         rect.height = size;
+    }
+
+    public void reposition() {
+        float randX = MathUtils.random(0,39);
+        float randY = MathUtils.random(0,29);
+        this.pos_x = randX*20;
+        this.pos_y = randY*20;
     }
 
     /*****
