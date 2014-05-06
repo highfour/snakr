@@ -244,8 +244,13 @@ public class GameScreen implements Screen {
             lives--;
             playerdata.put("lives", lives);
             resetPlayer(snake, playerdata);
+            // snakes are stopped
+            // dead snake is turned black
+            // display countdown
+            // reset game
         } else {
             // TODO: kill player
+            // game over, congratulate other player
         }
     }
 
@@ -293,8 +298,11 @@ public class GameScreen implements Screen {
 
         playerdata.put("direction", randDirection);
 
-        if (isOccupied(randX*20, randY*20)) resetPlayer(snake, playerdata);
-        snake.getFirst().setPos(randX*20, randY*20);
+        if (isOccupied(randX*20, randY*20)) {
+            resetPlayer(snake, playerdata);
+        } else {
+            snake.getFirst().setPos(randX*20, randY*20);
+        }
     }
 
     public boolean isOccupied(float x, float y) {
