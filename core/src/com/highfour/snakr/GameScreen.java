@@ -132,7 +132,7 @@ public class GameScreen implements Screen {
         // be separated for both players to allow for speed increasing powerups
         if (time - oldtime >= 175) { //DEBUG: this is a little fast, set the time up
             updatePos(player1, player1_data);
-            updatePos(player2, player2_data);
+//            updatePos(player2, player2_data); //DEBUG: player 2 doesn't move for singleplayer reasons
             oldtime = time;
         }
 
