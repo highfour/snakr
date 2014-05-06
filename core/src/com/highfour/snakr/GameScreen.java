@@ -336,6 +336,8 @@ public class GameScreen implements Screen {
         player2.get(0).setPos(200, 160);
         player1_data.put("direction", 3);
         player2_data.put("direction", 1);
+        player1_data.put("time", 200);
+        player2_data.put("time", 200);
         player1_color = new Color(153/255f, 196/255f, 84/255f, 1);
         player2_color = new Color(106/255f, 131/255f, 177/255f, 1);
         player1_data.put("length", 3);
