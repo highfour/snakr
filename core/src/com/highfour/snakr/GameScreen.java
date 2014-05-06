@@ -20,7 +20,7 @@ public class GameScreen implements Screen {
     Snakr game;
 
     // countdown numbers
-    TextureAtlas numbers = new TextureAtlas("Numbers.pack");
+    TextureAtlas numbers = new TextureAtlas("numbers.pack");
 
     // Snake 1 - green
     private LinkedList<Snake> player1 = new LinkedList<Snake>();
@@ -41,6 +41,8 @@ public class GameScreen implements Screen {
     // the texture used for the snake's lives
     private Texture heart = new Texture("heart.png");
 
+    boolean movement = true;
+
     public GameScreen(final Snakr game) {
         this.game = game;
 
@@ -54,7 +56,7 @@ public class GameScreen implements Screen {
         player1_data.put("length", 3);
         player1_data.put("dir_changed", 0);
         player1_data.put("number", 1);
-        player1_data.put("time", 175);
+        player1_data.put("time", 200);
 
 
         player2_data.put("lives", 3);
@@ -62,7 +64,7 @@ public class GameScreen implements Screen {
         player2_data.put("length", 3);
         player2_data.put("dir_changed", 0);
         player2_data.put("number", 2);
-        player2_data.put("time", 300);
+        player2_data.put("time", 200);
     }
 
     @Override
@@ -87,7 +89,7 @@ public class GameScreen implements Screen {
         // draw items
         for (Item item : items) {
             game.shapes.setColor(item.getColor());
-            game.shapes.rect(item.getX(), item.getY(), item.getSize(), item.getSize());
+            game.shapes.rect(item.getX()+1, item.getY()+1, item.getSize()-2, item.getSize()-2);
         }
 
 
@@ -136,17 +138,19 @@ public class GameScreen implements Screen {
         /***********
         UPDATE STUFF
         ***********/
-        time = TimeUtils.millis();
-        // draw an new head for each player every x milliseconds, this could also
-        // be separated for both players to allow for speed increasing powerups
-        if (time - player1_time >= player1_data.get("time")) {
-            updatePos(player1, player1_data);
-            player1_time = time;
-        }
 
-        if (time - player2_time >= player2_data.get("time")) {
-//            updatePos(player2, player2_data); // DEBUG: for singleplayer reasons
-            player2_time = time;
+        if (movement) {
+            time = TimeUtils.millis();
+            // draw an new head for each player every x milliseconds
+            if (time - player1_time >= player1_data.get("time")) {
+                updatePos(player1, player1_data);
+                player1_time = time;
+            }
+
+            if (time - player2_time >= player2_data.get("time")) {
+                updatePos(player2, player2_data); // DEBUG: for singleplayer reasons
+                player2_time = time;
+            }
         }
 
         // place a new item on screen if there are no more
@@ -195,6 +199,13 @@ public class GameScreen implements Screen {
         } else {
             item.setPos_x(randX * 20);
             item.setPos_y(randY * 20);
+            float rando = MathUtils.random(0,100);
+            if (rando > 75 && rando < 95) {
+                item.setColor(Color.ORANGE);
+            }
+            if (rando >= 95) {
+                item.setColor(Color.DARK_GRAY);
+            }
         }
     }
 
@@ -205,6 +216,15 @@ public class GameScreen implements Screen {
         for (Item i : items) {
             if (snake.get(0).getX() == i.getX() && snake.get(0).getY() == i.getY()) {
                 playerdata.put("length", playerdata.get("length") + 1);
+                if (i.getColor() == Color.ORANGE) {
+                    playerdata.put("time", playerdata.get("time")-50);
+                    i.setColor(Color.RED);
+                } else if (i.getColor() == Color.DARK_GRAY) {
+                    playerdata.put("time", 25);
+                    i.setColor(Color.RED);
+                } else {
+                    playerdata.put("time", 200);
+                }
                 repositionItem(i);
                 break;
             }
@@ -250,10 +270,6 @@ public class GameScreen implements Screen {
             lives--;
             playerdata.put("lives", lives);
             resetPlayer(snake, playerdata);
-            // snakes are stopped
-            // dead snake is turned black
-            // display countdown
-            // reset game
         } else {
             // TODO: kill player
             // game over, congratulate other player
@@ -290,25 +306,48 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void countdown() {
+        long time = TimeUtils.millis();
+        long tmpTime = time;
+        while (time - tmpTime < 3000) {
+            time = TimeUtils.millis();
+        }
+    }
+
     private void resetPlayer (LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
-        // shorten snake back to three elements
-        while (snake.size() > 3) {
-            snake.removeLast();
-            playerdata.put("length", 3);
+
+        // dead snake turns black
+        if (playerdata.get("number") == 1) {
+            player1_color = Color.BLACK;
+        }
+        if (playerdata.get("number") == 2) {
+            player2_color = Color.BLACK;
         }
 
-        float randX = MathUtils.random(8,32);
-        float randY = MathUtils.random(6,24);
+        // stop the snakes
+        movement = false;
 
-        int randDirection = MathUtils.random(0,3);
+        // display countdown
+        countdown();
 
-        playerdata.put("direction", randDirection);
+        // reset game
 
-        if (isOccupied(randX*20, randY*20)) {
-            resetPlayer(snake, playerdata);
-        } else {
-            snake.getFirst().setPos(randX*20, randY*20);
+        player1.get(0).setPos(600, 460);
+        player2.get(0).setPos(200, 160);
+        player1_data.put("direction", 3);
+        player2_data.put("direction", 1);
+        player1_color = new Color(153/255f, 196/255f, 84/255f, 1);
+        player2_color = new Color(106/255f, 131/255f, 177/255f, 1);
+        player1_data.put("length", 3);
+        while (player1.size() > 3) {
+            player1.removeLast();
         }
+        player2_data.put("length", 3);
+        while (player2.size() > 3) {
+            player2.removeLast();
+        }
+
+        movement = true;
     }
 
     public boolean isOccupied(float x, float y) {

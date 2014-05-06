@@ -57,4 +57,8 @@ public class Item {
     public void setPos_x(float pos_x) {
         this.pos_x = pos_x;
     }
+
+    public void setColor(Color color) {
+        this.item_color = color;
+    }
 }
