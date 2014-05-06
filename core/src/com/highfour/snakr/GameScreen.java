@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
     private Vector<Item> items = new Vector<Item>();
 
     // used for moving the player in certain amounts of time
-    long time, oldtime;
+    long time, player1_time, player2_time;
 
     // the texture used for the snake's lives
     private Texture heart = new Texture("heart.png");
@@ -54,6 +54,7 @@ public class GameScreen implements Screen {
         player1_data.put("length", 3);
         player1_data.put("dir_changed", 0);
         player1_data.put("number", 1);
+        player1_data.put("time", 175);
 
 
         player2_data.put("lives", 3);
@@ -61,6 +62,7 @@ public class GameScreen implements Screen {
         player2_data.put("length", 3);
         player2_data.put("dir_changed", 0);
         player2_data.put("number", 2);
+        player2_data.put("time", 300);
     }
 
     @Override
@@ -137,10 +139,14 @@ public class GameScreen implements Screen {
         time = TimeUtils.millis();
         // draw an new head for each player every x milliseconds, this could also
         // be separated for both players to allow for speed increasing powerups
-        if (time - oldtime >= 175) { //DEBUG: this is a little fast, set the time up
+        if (time - player1_time >= player1_data.get("time")) {
             updatePos(player1, player1_data);
-//            updatePos(player2, player2_data); //DEBUG: player 2 doesn't move for singleplayer reasons
-            oldtime = time;
+            player1_time = time;
+        }
+
+        if (time - player2_time >= player2_data.get("time")) {
+//            updatePos(player2, player2_data); // DEBUG: for singleplayer reasons
+            player2_time = time;
         }
 
         // place a new item on screen if there are no more
