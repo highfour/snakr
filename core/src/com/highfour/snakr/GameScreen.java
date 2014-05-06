@@ -47,14 +47,14 @@ public class GameScreen implements Screen {
         // initialize player data
         player1_data.put("lives", 3);
         player1_data.put("direction", 3);
-        player1_data.put("length", 1);
+        player1_data.put("length", 3);
         player1_data.put("dir_changed", 0);
         player1_data.put("number", 1);
 
 
         player2_data.put("lives", 3);
         player2_data.put("direction", 1);
-        player2_data.put("length", 1);
+        player2_data.put("length", 3);
         player2_data.put("dir_changed", 0);
         player2_data.put("number", 2);
     }
@@ -244,7 +244,7 @@ public class GameScreen implements Screen {
 
     private void testCollision(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
         // CollisionTest for the snake itself
-        for (int i=1; i<snake.size(); i++) {
+        for (int i=4; i<snake.size(); i++) {
             if (snake.get(0).getX() == snake.get(i).getX() && snake.get(0).getY() == snake.get(i).getY()) {
                 lostLive(snake, playerdata);
             }
@@ -274,9 +274,9 @@ public class GameScreen implements Screen {
 
     private void resetPlayer (LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
         // shorten snake back to three elements
-        while (snake.size() > 1) {
+        while (snake.size() > 3) {
             snake.removeLast();
-            playerdata.put("length", 1);
+            playerdata.put("length", 3);
         }
 
         float randX = MathUtils.random(8,32);
@@ -310,10 +310,13 @@ public class GameScreen implements Screen {
     }
 
     private void genItem () {
-        float randX = MathUtils.random(0,40);
-        float randY = MathUtils.random(0,30);
-        // TODO: check if there's nothing there
-        items.add(new Item(randX*20,randY*20));
+        float randX = MathUtils.random(0,39);
+        float randY = MathUtils.random(0,29);
+        if (isOccupied(randX*20, randY*20)) {
+            genItem();
+        } else {
+            items.add(new Item(randX*20,randY*20));
+        }
     }
 
     @Override
