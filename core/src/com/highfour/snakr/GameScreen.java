@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
         time = TimeUtils.millis();
         // draw an new head for each player every x milliseconds, this could also
         // be separated for both players to allow for speed increasing powerups
-        if (time - oldtime >= 200) { //DEBUG: this is a little fast, set the time up
+        if (time - oldtime >= 100) { //DEBUG: this is a little fast, set the time up
             updatePos(player1, player1_data);
             updatePos(player2, player2_data);
             oldtime = time;
@@ -179,9 +179,10 @@ public class GameScreen implements Screen {
         float randY = MathUtils.random(0,29);
         if (isOccupied(randX*20, randY*20)) {
             repositionItem(item);
+        } else {
+            item.setPos_x(randX * 20);
+            item.setPos_y(randY * 20);
         }
-        item.setPos_x(randX*20);
-        item.setPos_y(randY*20);
     }
 
     private void updatePos(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
@@ -190,7 +191,7 @@ public class GameScreen implements Screen {
 
         for (Item i : items) {
             if (snake.get(0).getX() == i.getX() && snake.get(0).getY() == i.getY()) {
-                playerdata.put("length", playerdata.get("length") + 1);
+                playerdata.put("length", playerdata.get("length") + 3);
                 repositionItem(i);
                 break;
             }
