@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+// Hier passieren Dinge im Repo
 public class Snakr extends Game {
 	SpriteBatch batch;
 	BitmapFont font;
