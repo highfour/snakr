@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 public class GameScreen implements Screen {
-
+//Huhu
     Snakr game;
 
     // countdown numbers
