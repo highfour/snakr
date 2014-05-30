@@ -273,6 +273,7 @@ public class GameScreen implements Screen {
         } else {
             // TODO: kill player
             // game over, congratulate other player
+            game.setScreen(new GameOverScreen(game));
         }
     }
 
