@@ -273,7 +273,11 @@ public class GameScreen implements Screen {
         } else {
             // game over, congratulate other player
             resetPlayer(snake, playerdata);
-            game.setScreen(new GameOverScreen(game));
+            if (snake == player1) {
+                game.setScreen(new GameOverScreen(game, 2));
+            } else {
+                game.setScreen(new GameOverScreen(game, 1));
+            }
         }
     }
 
