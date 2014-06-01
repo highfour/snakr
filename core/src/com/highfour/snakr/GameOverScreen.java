@@ -30,7 +30,8 @@ public class GameOverScreen implements Screen {
         camera.update();
         game.batch.begin();
         game.font.setColor(Color.BLACK);
-        game.font.draw(game.batch, "Game Over!", 100, 150);
+        game.font.setScale(4f);
+        game.font.draw(game.batch, "Game Over!", 260, 330);
         game.batch.end();
     }
 

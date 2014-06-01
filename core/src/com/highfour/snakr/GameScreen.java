@@ -271,8 +271,8 @@ public class GameScreen implements Screen {
             playerdata.put("lives", lives);
             resetPlayer(snake, playerdata);
         } else {
-            // TODO: kill player
             // game over, congratulate other player
+            resetPlayer(snake, playerdata);
             game.setScreen(new GameOverScreen(game));
         }
     }

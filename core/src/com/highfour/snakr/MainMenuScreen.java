@@ -26,8 +26,9 @@ public class MainMenuScreen implements Screen {
         camera.update();
         game.batch.begin();
         game.font.setColor(Color.BLACK);
-        game.font.draw(game.batch, "Welcome to Snakr!", 100, 150);
-        game.font.draw(game.batch, "Press any key to continue.", 100, 100);
+        game.font.setScale(4f);
+        game.font.draw(game.batch, "Snakr", 310, 330);
+//        game.font.draw(game.batch, "Press any key to continue.", 100, 100);
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.isTouched()) {
