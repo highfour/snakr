@@ -275,8 +275,10 @@ public class GameScreen implements Screen {
             resetPlayer(snake, playerdata);
             if (snake == player1) {
                 game.setScreen(new GameOverScreen(game, 2));
+                dispose();
             } else {
                 game.setScreen(new GameOverScreen(game, 1));
+                dispose();
             }
         }
     }
@@ -314,7 +316,7 @@ public class GameScreen implements Screen {
     private void countdown() {
         long time = TimeUtils.millis();
         long tmpTime = time;
-        while (time - tmpTime < 3000) {
+        while (time - tmpTime < 1500) {
             time = TimeUtils.millis();
         }
     }

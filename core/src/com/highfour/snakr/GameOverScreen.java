@@ -1,6 +1,7 @@
 package com.highfour.snakr;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -44,6 +45,11 @@ public class GameOverScreen implements Screen {
             game.font.draw(game.batch, "Gratulation, Player 2", 160, 260);
         }
         game.batch.end();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.isTouched()) {
+            game.setScreen(new GameScreen(game));
+            dispose();
+        }
     }
 
     @Override
