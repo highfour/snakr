@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -18,9 +17,6 @@ import java.util.Vector;
 public class GameScreen implements Screen {
 
     Snakr game;
-
-    // countdown numbers
-    TextureAtlas numbers = new TextureAtlas("numbers.pack");
 
     // Snake 1 - green
     private LinkedList<Snake> player1 = new LinkedList<Snake>();
@@ -74,10 +70,6 @@ public class GameScreen implements Screen {
         // set background color to white
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        TextureAtlas.AtlasRegion number_1 = numbers.findRegion("1");
-        TextureAtlas.AtlasRegion number_2 = numbers.findRegion("2");
-        TextureAtlas.AtlasRegion number_3 = numbers.findRegion("3");
 
         /**********
         DRAW SHAPES
@@ -230,8 +222,6 @@ public class GameScreen implements Screen {
             }
         }
 
-        testCollision(snake, playerdata);
-
         switch(playerdata.get("direction")){
             case 0:
                 snake.addFirst(new Snake(firstX, firstY + snake.getFirst().getSize()));
@@ -261,7 +251,7 @@ public class GameScreen implements Screen {
             snake.removeLast();
         }
 
-
+        testCollision(snake, playerdata);
     }
 
     private void lostLive(LinkedList<Snake> snake, HashMap<String, Integer> playerdata) {
